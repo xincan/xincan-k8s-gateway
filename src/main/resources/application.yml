@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: xincan-k8s-gateway
+  profiles:
+    active: @spring.profiles.active@
+

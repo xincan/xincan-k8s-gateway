@@ -1,0 +1,28 @@
+spring:
+  profiles:
+    active: kubernetes
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          #开启小写验证，默认feign根据服务名查找都是用的全大写
+          lowerCaseServiceId: true
+
+      routes:
+        - id: xincan-k8s-provider
+          uri: lb://${spring.cloud.gateway.routes[0].id}
+          predicates:
+            - Path=/api/provider/**
+          filters:
+            - StripPrefix=1
+        - id: xincan-k8s-consumer
+          uri: lb://${spring.cloud.gateway.routes[1].id}
+          predicates:
+            - Path=/api/consumer/**
+          filters:
+            - StripPrefix=1
